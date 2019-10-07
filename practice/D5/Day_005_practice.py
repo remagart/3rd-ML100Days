@@ -92,18 +92,55 @@ df.columns = ["name","url"]
 df.head()
 
 
+#%%
 
+import matplotlib.pyplot as plt
+import skimage.io as skio
+import numpy as np
+from PIL import Image
 
+img2 = Image.open('data/example.jpg')
+img2 = np.array(img2)
+plt.imshow(img2)
+plt.show()
 
+#%%
+from io import BytesIO
 
+first_link = df.loc[0,"url"]
 
+print(first_link)
+response = requests.get(first_link)
+img = Image.open(BytesIO(response.content))
 
+plt.imshow(img)
+plt.show()
 
+#%%
+from io import BytesIO
+def img2arr_fromURLs(url_list, resize = False):
+    
+    img_list = []
+    for i in url_list:
+        print("YCC test")
+        print(i) 
+        response = requests.get(i)
+        print(response)
+        if response == 200:
+            img = Image.open(BytesIO(response.content))
+            img_list.append(img)
+    return img_list
 
+#%%
+df = pd.DataFrame(dataArray)
+print(df[0:5][1].values)
+result = img2arr_fromURLs(df[0:5][1].values)
+print(result)
 
+#%%
 
-
-
-
+for im_get in result:
+    plt.imshow(im_get)
+    plt.show()
 
 
