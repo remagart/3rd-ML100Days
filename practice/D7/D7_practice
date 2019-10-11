@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Oct 11 00:19:52 2019
+
+@description D7 practice
+@author: richard
+"""
+#%%
+# 載入基本套件
+import pandas as pd
+import numpy as np
+
+# 讀取訓練與測試資料
+data_path = 'data/'
+df_train = pd.read_csv(data_path + 'house_train.csv.gz')
+df_test = pd.read_csv(data_path + 'house_test.csv.gz')
+
+print(df_train.shape)
+print(df_train.tail())
+print(df_test.shape)
+print(df_test.head(10))
+
+#%%
+import pandas as pd
+import numpy as np
+
+data_path = 'data/'
+df_train = pd.read_csv(data_path + 'house_train.csv.gz')
+df_test = pd.read_csv(data_path + 'house_test.csv.gz')
+
+#%%
+
+train_Y = np.log1p(df_train["SalePrice"])
+ids = df_test["Id"]
+
+df_train = df_train.drop(['Id', 'SalePrice'],axis=1)
+
+df_test = df_test.drop(['Id'] , axis=1)
+df_train
+#%%
+df = pd.concat([df_train,df_test])
+df.head()
+
+#%%
+
+dtype_df = df.dtypes
+dtype_df
+
+#%%
+dtype_df = df.dtypes.reset_index()
+
+
+#%%
+dtype_df.columns = ["Count", "Column Type"]
+
+dtype_df
+
+#%%
+#dtype_df = dtype_df.groupby("Column Type").aggregate('count').reset_index()
+
+dtype_df = dtype_df.groupby("Column Type").aggregate('count').reset_index()
+
+
+#%%
+
+int_features = []
+float_features = []
+object_features = []
+
+print(f"df.dtypes:\n {df.dtypes}\n===")
+print(f"df.columns:\n {len(df.columns)} \n")
+
+for dtype, feature in zip(df.dtypes, df.columns):
+    if dtype == 'float64':
+        float_features.append(feature)
+    elif dtype == 'int64':
+        int_features.append(feature)
+    else:
+        object_features.append(feature)
+
+#print(f'{len(int_features)} Integer Features : {int_features}\n')
+#print(f'{len(float_features)} Float Features : {float_features}\n')
+print(f'{len(object_features)} Object Features : {object_features}')
+
+#%%
+
+# HW
+
+#%%
+
+import numpy as np
+import pandas as pd
+
+dir = "data/"
+df_train = pd.read_csv(dir+"titanic_train.csv")
+df_test = pd.read_csv(dir+"titanic_test.csv")
+
+pd.set_option('display.max_columns', 500)
+
+
+train_Y = df_train["Survived"]
+ids = df_test["PassengerId"]
+
+df_train = df_train.drop(['PassengerId', 'Survived'] , axis=1)
+df_test = df_test.drop(['PassengerId'] , axis=1)
+
+df = pd.concat([df_train,df_test])
+
+dtype_df = df.dtypes.reset_index() 
+dtype_df.columns = ["Count", "Column Type"]
+
+dtype_df = dtype_df.groupby("Column Type").aggregate('count').reset_index()
+
+int_features = []
+float_features = []
+object_features = []
+
+for dtype, feature in zip(df.dtypes, df.columns):
+    if dtype == 'float64':
+        float_features.append(feature)
+    elif dtype == 'int64':
+        int_features.append(feature)
+    else:
+        object_features.append(feature)
+print(f'{len(int_features)} Integer Features : {int_features}\n')
+print(f'{len(float_features)} Float Features : {float_features}\n')
+print(f'{len(object_features)} Object Features : {object_features}')
+
+print("===mean====")
+print(f"--Integer--:\n {df[int_features].mean()}")
+print(f"--float--:\n {df[float_features].mean()}")
+print(f"--object--:\n {df[object_features].mean()}")
+
+print("===max===")
+print(f"--Integer--:\n {df[int_features].max()}")
+print(f"--float--:\n {df[float_features].max()}")
+print(f"--object--:\n {df[object_features].max()}")
+
+print("===nunique===")
+print(f"--Integer--:\n {df[int_features].nunique()}")
+print(f"--float--:\n {df[float_features].nunique()}")
+print(f"--object--:\n {df[object_features].nunique()}")
+
+#%%
+
+a = {'weekday': ['aac', 'aaC'],
+        'city': ['Austin', 'Dallas'],
+        'visitor': [139, 237]}
+
+a = pd.DataFrame(a)
+a.max()
+
+
+
